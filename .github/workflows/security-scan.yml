@@ -1,0 +1,19 @@
+name: Security Advisor Bot
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Scan for hardcoded passwords
+        run: |
+          echo "Scanning for hardcoded passwords..."
+          grep -rin --exclude-dir=node_modules --exclude=security-scan.yml 'password\s*=' . || echo "No hardcoded passwords found."
